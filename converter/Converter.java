@@ -3,32 +3,62 @@ package converter;
 import java.util.Scanner;
 
 public class Converter {
-    private long number;
+    private String number;
     private int base;
 
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     public Converter() {
-        number = 0;
+        number = "";
         base = 10;
     }
 
-    public void inputNumber() {
-        System.out.print("Enter number in decimal system: ");
-        this.number = scanner.nextLong();
+    public void inputNumber(String msg) {
+        System.out.print(msg);
+        this.number = scanner.next();
     }
 
-    public void inputBase() {
-        System.out.print("Enter target base: ");
+    public void inputBase(String msg) {
+        System.out.print(msg);
         base = scanner.nextInt();
     }
 
-    public String convertingNumberToBase() {
-        return switch (base) {
-            case 2 -> Long.toBinaryString(number);
-            case 8 -> Long.toOctalString(number);
-            case 16 -> Long.toHexString(number).toUpperCase();
-            default -> Long.toString(number);
-        };
+    public void convertingNumberFromBase() {
+        inputNumber("Enter a number in decimal system: ");
+        inputBase("Enter the target base: ");
+        System.out.println("Conversion result: " +
+                switch (base) {
+                    case 2 -> Long.toBinaryString(Long.parseLong(number));
+                    case 8 -> Long.toOctalString(Long.parseLong(number));
+                    case 16 -> Long.toHexString(Long.parseLong(number)).toUpperCase();
+                    default -> number;
+                });
     }
+
+    private void convertingNumberToBase() {
+        inputNumber("Enter source number: ");
+        inputBase("Enter source base: ");
+        System.out.println("Conversion to decimal result: " +
+                switch (base) {
+                    case 2 -> Long.parseLong(number, 2);
+                    case 8 -> Long.parseLong(number, 8);
+                    case 16 -> Long.parseLong(number, 16);
+                    default -> Long.parseLong(number);
+                });
+    }
+
+    public void action() {
+        while (true) {
+            System.out.print("Do you want to convert /from decimal or /to decimal? (To quit type /exit) ");
+            switch (scanner.next()) {
+                case "/from" -> convertingNumberFromBase();
+                case "/to" -> convertingNumberToBase();
+                case "/exit" -> {
+                    return;
+                }
+            }
+            System.out.println();
+        }
+    }
+
 }
