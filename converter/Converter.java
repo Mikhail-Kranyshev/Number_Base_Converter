@@ -38,13 +38,7 @@ public class Converter {
     private void convertingNumberToBase() {
         inputNumber("Enter source number: ");
         inputBase("Enter source base: ");
-        System.out.println("Conversion to decimal result: " +
-                switch (base) {
-                    case 2 -> Long.parseLong(number, 2);
-                    case 8 -> Long.parseLong(number, 8);
-                    case 16 -> Long.parseLong(number, 16);
-                    default -> Long.parseLong(number);
-                });
+        System.out.println("Conversion to decimal result: " + Long.parseLong(number, base));
     }
 
     public void action() {
